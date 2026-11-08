@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Import catalog CSV</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <p class="context">API Design II · Tema B</p>
+      <h1>Import catalog CSV</h1>
+      <p>Încarcă un fișier cu produse și urmărește ce ajunge în catalog.</p>
+    </header>
+
+    <div class="workspace">
+      <section class="panel" aria-labelledby="upload-title">
+        <h2 id="upload-title">Import nou</h2>
+
+        <form id="import-form">
+          <div class="field">
+            <label for="file">Fișier CSV</label>
+            <input
+              id="file"
+              type="file"
+              accept=".csv,text/csv"
+              aria-describedby="csv-help"
+              required
+            >
+            <small id="csv-help">Prima linie trebuie să fie <code>sku,price</code>.</small>
+          </div>
+
+          <div class="field">
+            <label for="mode">Mod de salvare</label>
+            <select id="mode">
+              <option value="partial">Succes parțial</option>
+              <option value="atomic">Import atomic</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="channel">Urmărirea progresului</label>
+            <select id="channel">
+              <option value="sse">SSE</option>
+              <option value="polling">Polling</option>
+            </select>
+          </div>
+
+          <div class="actions">
+            <button id="submit" type="submit">Pornește importul</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel" aria-labelledby="status-title">
+        <h2 id="status-title">Stare și rezultat</h2>
+
+        <p id="message" class="message" role="status">Alege un fișier pentru a începe.</p>
+        <p id="state" class="state">Stare: —</p>
+        <progress id="bar" max="1" value="0" aria-label="Progresul importului"></progress>
+        <p id="counts">Rânduri verificate: —</p>
+        <p id="saved" class="saved" hidden></p>
+        <ul id="errors" class="errors"></ul>
+
+        <div id="hook-box" class="webhook" data-status="idle" role="status" aria-atomic="true">
+          <strong>Notificare webhook</strong>
+          <p id="hook">Se trimite după finalizarea importului.</p>
+        </div>
+
+        <details id="report" hidden>
+          <summary>Vezi raportul JSON</summary>
+          <pre id="raw"></pre>
+        </details>
+
+        <p class="catalog-link">
+          <a href="/catalog" target="_blank" rel="noopener">Vezi catalogul salvat (JSON)</a>
+        </p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
